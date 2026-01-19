@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المستضيف الذكي | إدارة المواقع</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .main-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .settings-bar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 0;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .upload-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .upload-box {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .upload-box h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #212529;
+        }
+        
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 40px 20px;
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .file-upload-label:hover {
+            background: #f0f4ff;
+            border-color: #764ba2;
+            transform: scale(1.02);
+        }
+        
+        .file-upload-label.has-file {
+            background: #e7f3ff;
+            border-color: #0070f3;
+            border-style: solid;
+        }
+        
+        .file-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .file-text {
+            font-size: 15px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .file-name {
+            font-size: 14px;
+            color: #0070f3;
+            margin-top: 12px;
+            font-weight: 700;
+        }
+        
+        .options-group {
+            margin-top: 20px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-label:hover {
+            background: #f0f4ff;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .checkbox-label span {
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .watermark-input {
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .watermark-input.show {
+            display: block;
+        }
+        
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 3px solid #28a745;
+        }
+        
+        .result.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 3px solid #dc3545;
+        }
+        
+        .result.loading {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 3px solid #ffc107;
+        }
+        
+        .result-content {
+            text-align: center;
+        }
+        
+        .result-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .result-message {
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .result-url {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        
+        .result-url a {
+            color: #0070f3;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .result-url a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .sites-list {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .sites-list h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #212529;
+        }
+        
+        .site-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .site-item:hover {
+            background: #e9ecef;
+            transform: translateX(-5px);
+        }
+        
+        .site-info h4 {
+            font-size: 16px;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+        
+        .site-info p {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        
+        .site-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-btn.view {
+            background: #0070f3;
+            color: white;
+        }
+        
+        .icon-btn.delete {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-badge.online {
+            background: #d4edda;
+            color: #28a745;
+        }
+        
+        .status-badge.offline {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="main-card">
+        <div class="header">
+            <h1>🚀 المستضيف الذكي</h1>
+            <p>ارفع واستضف مواقعك على GitHub Pages بضغطة زر</p>
+        </div>
+
+        <!-- Settings Bar -->
+        <div class="settings-bar">
+            <div class="settings-grid">
+                <div class="form-group">
+                    <label>🔑 GitHub Token</label>
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+                    <div class="help-text">احصل عليه من github.com/settings/tokens</div>
+                </div>
+                <div class="form-group">
+                    <label>📦 Repository</label>
+                    <input type="text" id="repoName" placeholder="username/repo-name">
+                    <div class="help-text">مثال: ahmed/my-websites</div>
+                </div>
+                <div class="form-group">
+                    <label>📁 Base Path</label>
+                    <input type="text" id="basePath" value="sites" placeholder="sites">
+                    <div class="help-text">المجلد الأساسي للمواقع</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <!-- Left: File Upload -->
+            <div class="upload-box">
+                <h3>📤 رفع موقع جديد</h3>
+                
+                <div class="form-group">
+                    <label>اسم الموقع</label>
+                    <input type="text" id="siteName" placeholder="my-portfolio">
+                </div>
+
+                <div class="file-upload" style="margin-top: 20px;">
+                    <input type="file" id="htmlFile" accept=".html,.htm" onchange="handleFileSelect()">
+                    <label for="htmlFile" class="file-upload-label" id="fileLabel">
+                        <span class="file-icon">📄</span>
+                        <div class="file-text">اضغط لاختيار ملف HTML</div>
+                        <div class="file-name" id="fileName"></div>
+                    </label>
+                </div>
+
+                <div class="options-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="addWatermark" checked onchange="toggleWatermark()">
+                        <span>إضافة علامة مائية</span>
+                    </label>
+                    
+                    <div class="watermark-input show" id="watermarkOptions">
+                        <input type="text" id="watermarkText" placeholder="Powered by MyWebsite" value="Powered by YourDomain">
+                    </div>
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoOpen" checked>
+                        <span>فتح الموقع تلقائياً بعد النشر</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Right: Info -->
+            <div class="upload-box">
+                <h3>ℹ️ معلومات مهمة</h3>
+                
+                <div style="background: white; padding: 20px; border-radius: 12px; line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong>📌 خطوات سريعة:</strong></p>
+                    <ol style="padding-right: 20px; color: #495057;">
+                        <li>أدخل بيانات GitHub أعلاه</li>
+                        <li>اختر اسم للموقع</li>
+                        <li>ارفع ملف HTML</li>
+                        <li>اضغط "نشر الآن"</li>
+                    </ol>
+                    
+                    <p style="margin: 20px 0 10px;"><strong>⚠️ ملاحظات:</strong></p>
+                    <ul style="padding-right: 20px; color: #495057; font-size: 13px;">
+                        <li>تأكد من تفعيل GitHub Pages في إعدادات المشروع</li>
+                        <li>قد يستغرق النشر 1-2 دقيقة</li>
+                        <li>الرابط سيكون: username.github.io/repo/sites/sitename</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deploy Button -->
+        <button onclick="deployWebsite()" id="deployBtn">
+            🚀 نشر الموقع الآن
+        </button>
+
+        <!-- Result -->
+        <div class="result" id="result"></div>
+
+        <!-- Sites List -->
+        <div class="sites-list" id="sitesList" style="display: none;">
+            <h3>📋 المواقع المنشورة</h3>
+            <div id="sitesContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let deployedSites = JSON.parse(localStorage.getItem('deployedSites') || '[]');
+
+    function handleFileSelect() {
+        const file = document.getElementById('htmlFile').files[0];
+        const label = document.getElementById('fileLabel');
+        const fileName = document.getElementById('fileName');
+        
+        if (file) {
+            label.classList.add('has-file');
+            fileName.textContent = `✅ ${file.name}`;
+        }
+    }
+
+    function toggleWatermark() {
+        const checkbox = document.getElementById('addWatermark');
+        const options = document.getElementById('watermarkOptions');
+        options.classList.toggle('show', checkbox.checked);
+    }
+
+    function showResult(type, icon, title, message, url = null) {
+        const result = document.getElementById('result');
+        result.className = `result ${type}`;
+        result.style.display = 'block';
+        
+        let html = `
+            <div class="result-content">
+                <div class="result-icon">${icon}</div>
+                <div class="result-title">${title}</div>
+                <div class="result-message">${message}</div>
+        `;
+        
+        if (url) {
+            html += `
+                <div class="result-url">
+                    <a href="${url}" target="_blank">${url}</a>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-secondary" onclick="copyUrl('${url}')">📋 نسخ الرابط</button>
+                    <button class="btn-secondary" onclick="window.open('${url}', '_blank')">🌐 فتح الموقع</button>
+                </div>
+            `;
+        }
+        
+        html += '</div>';
+        result.innerHTML = html;
+        
+        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copyUrl(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('✅ تم نسخ الرابط بنجاح!');
+        });
+    }
+
+    async function deployWebsite() {
+        const token = document.getElementById('githubToken').value.trim();
+        const repo = document.getElementById('repoName').value.trim();
+        const basePath = document.getElementById('basePath').value.trim() || 'sites';
+        const siteName = document.getElementById('siteName').value.trim();
+        const fileInput = document.getElementById('htmlFile');
+        const deployBtn = document.getElementById('deployBtn');
+
+        // Validation
+        if (!token || !repo) {
+            showResult('error', '❌', 'خطأ', 'يرجى إدخال Token و Repository');
+            return;
+        }
+
+        if (!siteName) {
+            showResult('error', '❌', 'خطأ', 'يرجى إدخال اسم للموقع');
+            return;
+        }
+
+        if (!fileInput.files[0]) {
+            showResult('error', '❌', 'خطأ', 'يرجى اختيار ملف HTML');
+            return;
+        }
+
+        deployBtn.disabled = true;
+        deployBtn.textContent = '⏳ جاري النشر...';
+        showResult('loading', '⏳', 'جاري المعالجة...', 'يرجى الانتظار قليلاً');
+
+        try {
+            const file = fileInput.files[0];
+            let content = await file.text();
+
+            // Add watermark if enabled
+            if (document.getElementById('addWatermark').checked) {
+                const watermarkText = document.getElementById('watermarkText').value || 'Powered by YourDomain';
+                const watermark = `
+<!-- Watermark -->
+<div style="position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:50px;z-index:999999;font-family:'Segoe UI',sans-serif;font-size:14px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:all 0.3s ease;">
+    ${watermarkText}
+</div>
+`;
+                content = content.replace('</body>', watermark + '\n</body>');
+            }
+
+            // Encode to base64
+            const base64Content = btoa(unescape(encodeURIComponent(content)));
+            
+            // GitHub API path
+            const path = `${basePath}/${siteName}/index.html`;
+            const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+
+            // Check if file exists
+            let sha = null;
+            try {
+                const checkResponse = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (checkResponse.ok) {
+                    const data = await checkResponse.json();
+                    sha = data.sha;
+                }
+            } catch (e) {
+                // File doesn't exist, that's fine
+            }
+
+            // Upload file
+            const uploadData = {
+                message: `🚀 Deploy: ${siteName}`,
+                content: base64Content
+            };
+            
+            if (sha) {
+                uploadData.sha = sha;
+            }
+
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify(uploadData)
+            });
+
+            if (response.ok) {
+                const [username, repoName] = repo.split('/');
+                const siteUrl = `https://${username}.github.io/${repoName}/${basePath}/${siteName}/`;
+                
+                // Save to deployed sites
+                const siteData = {
+                    name: siteName,
+                    url: siteUrl,
+                    date: new Date().toISOString()
+                };
+                
+                deployedSites = deployedSites.filter(s => s.name !== siteName);
+                deployedSites.unshift(siteData);
+                localStorage.setItem('deployedSites', JSON.stringify(deployedSites));
+                
+                showResult('success', '🎉', 'تم النشر بنجاح!', 
+                    'موقعك الآن متاح على الإنترنت. قد يستغرق دقيقة واحدة حتى يصبح متاحاً.', 
+                    siteUrl);
+                
+                // Auto open if checked
+                if (document.getElementById('autoOpen').checked) {
+                    setTimeout(() => window.open(siteUrl, '_blank'), 2000);
+                }
+                
+                // Refresh sites list
+                displaySites();
+                
+                // Reset form
+                document.getElementById('siteName').value = '';
+                document.getElementById('htmlFile').value = '';
+                document.getElementById('fileLabel').classList.remove('has-file');
+                document.getElementById('fileName').textContent = '';
+                
+            } else {
+                const errorData = await response.json();
+                showResult('error', '❌', 'فشل النشر', errorData.message || 'حدث خطأ غير معروف');
+            }
+
+        } catch (error) {
+            showResult('error', '❌', 'خطأ', `حدث خطأ: ${error.message}`);
+        } finally {
+            deployBtn.disabled = false;
+            deployBtn.textContent = '🚀 نشر الموقع الآن';
+        }
+    }
+
+    function displaySites() {
+        if (deployedSites.length === 0) return;
+        
+        const sitesList = document.getElementById('sitesList');
+        const container = document.getElementById('sitesContainer');
+        
+        sitesList.style.display = 'block';
+        
+        container.innerHTML = deployedSites.map(site => `
+            <div class="site-item">
+                <div class="site-info">
+                    <h4>${site.name}</h4>
+                    <p>${new Date(site.date).toLocaleString('ar-EG')}</p>
+                </div>
+                <div class="site-actions">
+                    <button class="icon-btn view" onclick="window.open('${site.url}', '_blank')" title="فتح الموقع">
+                        🌐
+                    </button>
+                    <button class="icon-btn delete" onclick="deleteSite('${site.name}')" title="حذف">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function deleteSite(name) {
+        if (confirm(`هل أنت متأكد من حذف "${name}"؟`)) {
+            deployedSites = deployedSites.filter(s => s.name !== name);
+            localStorage.setItem('deployedSites', JSON.stringify(deployedSites));
+            displaySites();
+        }
+    }
+
+    // Load sites on page load
+    window.onload = () => {
+        displaySites();
+        
+        // Load saved settings
+        const savedToken = localStorage.getItem('github_token');
+        const savedRepo = localStorage.getItem('github_repo');
+        const savedPath = localStorage.getItem('base_path');
+        
+        if (savedToken) document.getElementById('githubToken').value = savedToken;
+        if (savedRepo) document.getElementById('repoName').value = savedRepo;
+        if (savedPath) document.getElementById('basePath').value = savedPath;
+        
+        // Save settings on change
+        document.getElementById('githubToken').addEventListener('change', (e) => {
+            localStorage.setItem('github_token', e.target.value);
+        });
+        document.getElementById('repoName').addEventListener('change', (e) => {
+            localStorage.setItem('github_repo', e.target.value);
+        });
+        document.getElementById('basePath').addEventListener('change', (e) => {
+            localStorage.setItem('base_path', e.target.value);
+        });
+    };
+</script>
+
+</body>
+</html>
