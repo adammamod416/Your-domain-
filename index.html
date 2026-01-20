@@ -3,210 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المستضيف الذكي | إدارة المواقع</title>
+    <title>منصة النشر المباشر</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-        }
-        
-        .main-card {
             background: white;
-            padding: 40px;
             border-radius: 24px;
+            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: slideUp 0.5s ease;
         }
         
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-size: 36px;
+        h1 {
+            font-size: 32px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            font-weight: 800;
+            text-align: center;
         }
         
-        .header p {
-            font-size: 16px;
+        .subtitle {
+            text-align: center;
             color: #666;
-        }
-        
-        .settings-bar {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 16px;
             margin-bottom: 30px;
-            border: 2px solid #e9ecef;
+            font-size: 16px;
         }
         
-        .settings-grid {
+        .settings {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
         }
         
         .form-group {
             margin-bottom: 0;
         }
         
-        .form-group label {
+        label {
             display: block;
             font-size: 13px;
             font-weight: 700;
             color: #495057;
             margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         input[type="text"],
-        input[type="password"] {
+        input[type="password"],
+        textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 12px;
             border: 2px solid #dee2e6;
             border-radius: 10px;
             font-size: 14px;
+            font-family: inherit;
             transition: all 0.3s;
-            background: white;
         }
         
-        input:focus {
+        input:focus,
+        textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        .upload-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .upload-section {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .upload-box {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 16px;
-            border: 2px solid #e9ecef;
-        }
-        
-        .upload-box h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #212529;
-        }
-        
-        .file-upload input[type="file"] {
-            display: none;
-        }
-        
-        .file-upload-label {
-            display: block;
-            padding: 40px 20px;
-            border: 3px dashed #667eea;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .file-upload-label:hover {
-            background: #f0f4ff;
-            border-color: #764ba2;
-            transform: scale(1.02);
-        }
-        
-        .file-upload-label.has-file {
-            background: #e7f3ff;
-            border-color: #0070f3;
-            border-style: solid;
-        }
-        
-        .file-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .file-text {
-            font-size: 15px;
-            color: #6c757d;
-            font-weight: 500;
-        }
-        
-        .file-name {
-            font-size: 14px;
-            color: #0070f3;
-            margin-top: 12px;
-            font-weight: 700;
-        }
-        
-        .options-group {
-            margin-top: 20px;
-        }
-        
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 12px;
-            background: white;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-        }
-        
-        .checkbox-label:hover {
-            background: #f0f4ff;
-        }
-        
-        .checkbox-label input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .checkbox-label span {
-            font-size: 14px;
-            color: #495057;
-            font-weight: 500;
-        }
-        
-        .watermark-input {
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .watermark-input.show {
-            display: block;
+        textarea {
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: vertical;
         }
         
         button {
@@ -218,10 +98,10 @@
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
             font-size: 17px;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
+            transition: all 0.3s;
+            margin-top: 20px;
         }
         
         button:hover:not(:disabled) {
@@ -232,20 +112,14 @@
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
         
         .result {
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 16px;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
             display: none;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            text-align: center;
         }
         
         .result.success {
@@ -263,363 +137,131 @@
             border: 3px solid #ffc107;
         }
         
-        .result-content {
-            text-align: center;
-        }
-        
         .result-icon {
-            font-size: 60px;
+            font-size: 50px;
             margin-bottom: 15px;
-        }
-        
-        .result-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .result-message {
-            font-size: 15px;
-            margin-bottom: 20px;
-            line-height: 1.6;
         }
         
         .result-url {
             background: white;
             padding: 15px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 15px 0;
             word-break: break-all;
         }
         
         .result-url a {
             color: #0070f3;
-            text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
+            text-decoration: none;
         }
         
-        .result-url a:hover {
-            text-decoration: underline;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .btn-secondary {
+        .btn-copy {
             background: white;
             color: #667eea;
             border: 2px solid #667eea;
             padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-        
-        .btn-secondary:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .sites-list {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
-        }
-        
-        .sites-list h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #212529;
-        }
-        
-        .site-item {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .site-item:hover {
-            background: #e9ecef;
-            transform: translateX(-5px);
-        }
-        
-        .site-info h4 {
-            font-size: 16px;
-            color: #212529;
-            margin-bottom: 5px;
-        }
-        
-        .site-info p {
-            font-size: 13px;
-            color: #6c757d;
-        }
-        
-        .site-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .icon-btn.view {
-            background: #0070f3;
-            color: white;
-        }
-        
-        .icon-btn.delete {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .icon-btn:hover {
-            transform: scale(1.1);
+            width: auto;
+            display: inline-block;
+            margin-top: 10px;
         }
         
         .help-text {
             font-size: 12px;
             color: #6c757d;
-            margin-top: 8px;
-            font-style: italic;
+            margin-top: 5px;
         }
         
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .note {
+            background: #e7f3ff;
+            border: 2px solid #0070f3;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
         }
         
-        .status-badge.online {
-            background: #d4edda;
-            color: #28a745;
-        }
-        
-        .status-badge.offline {
-            background: #f8d7da;
-            color: #dc3545;
+        @media (max-width: 768px) {
+            .settings {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="main-card">
-        <div class="header">
-            <h1>🚀 المستضيف الذكي</h1>
-            <p>ارفع واستضف مواقعك على GitHub Pages بضغطة زر</p>
-        </div>
-
-        <!-- Settings Bar -->
-        <div class="settings-bar">
-            <div class="settings-grid">
-                <div class="form-group">
-                    <label>🔑 GitHub Token</label>
-                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-                    <div class="help-text">
-                        <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0070f3; text-decoration: none; font-weight: 600;">
-                            🔗 احصل على Token جديد
-                        </a>
-                        <br>
-                        <span style="color: #dc3545; font-weight: 600;">⚠️ يجب اختيار صلاحية "repo" كاملة</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>📦 Repository</label>
-                    <input type="text" id="repoName" placeholder="username/repo-name">
-                    <div class="help-text">مثال: ahmed/my-websites</div>
-                </div>
-                <div class="form-group">
-                    <label>📁 Base Path</label>
-                    <input type="text" id="basePath" value="sites" placeholder="sites">
-                    <div class="help-text">المجلد الأساسي للمواقع</div>
-                </div>
+    <h1>🚀 منصة النشر المباشر</h1>
+    <p class="subtitle">الصق كود HTML مباشرة بدون مشاكل رفع الملفات</p>
+    
+    <div class="note">
+        <strong>💡 لماذا هذه الطريقة؟</strong><br>
+        بعض المتصفحات تمنع قراءة الملفات لأسباب أمنية. هذه الطريقة تتجنب المشكلة تماماً عن طريق نسخ ولصق الكود مباشرة.
+    </div>
+    
+    <div class="settings">
+        <div class="form-group">
+            <label>🔑 GitHub Token</label>
+            <input type="password" id="token" placeholder="ghp_xxxxxxxxxxxxx">
+            <div class="help-text">
+                <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0070f3;">إنشاء Token جديد</a>
             </div>
         </div>
-
-        <!-- Upload Section -->
-        <div class="upload-section">
-            <!-- Left: File Upload -->
-            <div class="upload-box">
-                <h3>📤 رفع موقع جديد</h3>
-                
-                <div class="form-group">
-                    <label>اسم الموقع</label>
-                    <input type="text" id="siteName" placeholder="my-portfolio">
-                </div>
-
-                <div class="file-upload" style="margin-top: 20px;">
-                    <input type="file" id="htmlFile" accept=".html,.htm" onchange="handleFileSelect()">
-                    <label for="htmlFile" class="file-upload-label" id="fileLabel">
-                        <span class="file-icon">📄</span>
-                        <div class="file-text">اضغط لاختيار ملف HTML</div>
-                        <div class="file-name" id="fileName"></div>
-                    </label>
-                </div>
-
-                <div class="options-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="addWatermark" checked onchange="toggleWatermark()">
-                        <span>إضافة علامة مائية</span>
-                    </label>
-                    
-                    <div class="watermark-input show" id="watermarkOptions">
-                        <input type="text" id="watermarkText" placeholder="Powered by MyWebsite" value="Powered by YourDomain">
-                    </div>
-
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="autoOpen" checked>
-                        <span>فتح الموقع تلقائياً بعد النشر</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Right: Info -->
-            <div class="upload-box">
-                <h3>ℹ️ معلومات مهمة</h3>
-                
-                <div style="background: white; padding: 20px; border-radius: 12px; line-height: 1.8;">
-                    <p style="margin-bottom: 15px;"><strong>📌 خطوات سريعة:</strong></p>
-                    <ol style="padding-right: 20px; color: #495057;">
-                        <li>أدخل بيانات GitHub أعلاه</li>
-                        <li>اختر اسم للموقع</li>
-                        <li>ارفع ملف HTML</li>
-                        <li>اضغط "نشر الآن"</li>
-                    </ol>
-                    
-                    <p style="margin: 20px 0 10px;"><strong>⚠️ ملاحظات:</strong></p>
-                    <ul style="padding-right: 20px; color: #495057; font-size: 13px;">
-                        <li><strong>Token يجب أن يحتوي على صلاحية "repo" كاملة</strong></li>
-                        <li>تأكد من تفعيل GitHub Pages في إعدادات المشروع</li>
-                        <li>قد يستغرق النشر 1-2 دقيقة</li>
-                        <li>الرابط سيكون: username.github.io/repo/sites/sitename</li>
-                    </ul>
-                    
-                    <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 12px; border-radius: 8px; margin-top: 15px;">
-                        <strong style="color: #856404;">🔐 خطوات إنشاء Token صحيح:</strong>
-                        <ol style="padding-right: 20px; color: #856404; font-size: 12px; margin-top: 8px;">
-                            <li>اذهب لـ <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0070f3;">github.com/settings/tokens/new</a></li>
-                            <li>اختر "Generate new token (classic)"</li>
-                            <li>✅ اختر صلاحية <strong>repo</strong> (كل الخيارات تحتها)</li>
-                            <li>اضغط Generate وانسخ الـ Token</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="form-group">
+            <label>📦 Repository</label>
+            <input type="text" id="repo" placeholder="username/repo-name">
+            <div class="help-text">مثال: ahmed/my-sites</div>
         </div>
-
-        <!-- Deploy Button -->
-        <button onclick="deployWebsite()" id="deployBtn">
-            🚀 نشر الموقع الآن
-        </button>
-
-        <!-- Result -->
-        <div class="result" id="result"></div>
-
-        <!-- Sites List -->
-        <div class="sites-list" id="sitesList" style="display: none;">
-            <h3>📋 المواقع المنشورة</h3>
-            <div id="sitesContainer"></div>
+        
+        <div class="form-group">
+            <label>📁 Base Path</label>
+            <input type="text" id="path" value="sites" placeholder="sites">
+        </div>
+        
+        <div class="form-group">
+            <label>🏷️ اسم الموقع</label>
+            <input type="text" id="siteName" placeholder="my-portfolio">
         </div>
     </div>
+    
+    <div class="form-group">
+        <label>📝 كود HTML</label>
+        <textarea id="htmlCode" placeholder="الصق كود HTML هنا..."></textarea>
+        <div class="help-text">افتح ملف HTML بأي محرر نصوص، انسخ كل المحتوى والصقه هنا</div>
+    </div>
+    
+    <button onclick="deploy()" id="deployBtn">🚀 نشر الموقع الآن</button>
+    
+    <div class="result" id="result"></div>
 </div>
 
 <script>
-    let deployedSites = JSON.parse(localStorage.getItem('deployedSites') || '[]');
-
-    let fileContent = null; // Store file content globally
-
-    function handleFileSelect() {
-        const fileInput = document.getElementById('htmlFile');
-        const label = document.getElementById('fileLabel');
-        const fileName = document.getElementById('fileName');
+    // Load saved settings
+    window.onload = () => {
+        document.getElementById('token').value = localStorage.getItem('gh_token') || '';
+        document.getElementById('repo').value = localStorage.getItem('gh_repo') || '';
+        document.getElementById('path').value = localStorage.getItem('gh_path') || 'sites';
         
-        // Check if file exists
-        if (!fileInput.files || fileInput.files.length === 0) {
-            label.classList.remove('has-file');
-            fileName.textContent = '';
-            fileContent = null;
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        
-        // Validate file type
-        if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
-            alert('⚠️ يرجى اختيار ملف HTML فقط');
-            fileInput.value = '';
-            fileContent = null;
-            return;
-        }
-        
-        // Validate file size (10MB max)
-        if (file.size > 10 * 1024 * 1024) {
-            alert('⚠️ حجم الملف كبير جداً (الحد الأقصى 10MB)');
-            fileInput.value = '';
-            fileContent = null;
-            return;
-        }
-        
-        // Read file immediately when selected
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            fileContent = e.target.result;
-            label.classList.add('has-file');
-            fileName.textContent = `✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-        };
-        
-        reader.onerror = function() {
-            alert('❌ فشل قراءة الملف. جرب ملف آخر');
-            fileInput.value = '';
-            fileContent = null;
-            label.classList.remove('has-file');
-            fileName.textContent = '';
-        };
-        
-        reader.readAsText(file, 'UTF-8');
-    }
-
-    function toggleWatermark() {
-        const checkbox = document.getElementById('addWatermark');
-        const options = document.getElementById('watermarkOptions');
-        options.classList.toggle('show', checkbox.checked);
-    }
-
+        // Save on change
+        document.getElementById('token').addEventListener('change', e => 
+            localStorage.setItem('gh_token', e.target.value));
+        document.getElementById('repo').addEventListener('change', e => 
+            localStorage.setItem('gh_repo', e.target.value));
+        document.getElementById('path').addEventListener('change', e => 
+            localStorage.setItem('gh_path', e.target.value));
+    };
+    
     function showResult(type, icon, title, message, url = null) {
         const result = document.getElementById('result');
         result.className = `result ${type}`;
         result.style.display = 'block';
         
         let html = `
-            <div class="result-content">
-                <div class="result-icon">${icon}</div>
-                <div class="result-title">${title}</div>
-                <div class="result-message">${message}</div>
+            <div class="result-icon">${icon}</div>
+            <h3>${title}</h3>
+            <p>${message}</p>
         `;
         
         if (url) {
@@ -627,111 +269,78 @@
                 <div class="result-url">
                     <a href="${url}" target="_blank">${url}</a>
                 </div>
-                <div class="btn-group">
-                    <button class="btn-secondary" onclick="copyUrl('${url}')">📋 نسخ الرابط</button>
-                    <button class="btn-secondary" onclick="window.open('${url}', '_blank')">🌐 فتح الموقع</button>
-                </div>
+                <button class="btn-copy" onclick="copyUrl('${url}')">📋 نسخ الرابط</button>
+                <button class="btn-copy" onclick="window.open('${url}', '_blank')">🌐 فتح الموقع</button>
             `;
         }
         
-        html += '</div>';
         result.innerHTML = html;
-        
-        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-
+    
     function copyUrl(url) {
-        navigator.clipboard.writeText(url).then(() => {
-            alert('✅ تم نسخ الرابط بنجاح!');
-        });
+        navigator.clipboard.writeText(url).then(() => alert('✅ تم نسخ الرابط!'));
     }
-
-    async function deployWebsite() {
-        const token = document.getElementById('githubToken').value.trim();
-        const repo = document.getElementById('repoName').value.trim();
-        const basePath = document.getElementById('basePath').value.trim() || 'sites';
+    
+    async function deploy() {
+        const token = document.getElementById('token').value.trim();
+        const repo = document.getElementById('repo').value.trim();
+        const path = document.getElementById('path').value.trim() || 'sites';
         const siteName = document.getElementById('siteName').value.trim();
-        const deployBtn = document.getElementById('deployBtn');
-
+        const htmlCode = document.getElementById('htmlCode').value.trim();
+        const btn = document.getElementById('deployBtn');
+        
         // Validation
         if (!token || !repo) {
             showResult('error', '❌', 'خطأ', 'يرجى إدخال Token و Repository');
             return;
         }
-
+        
         if (!siteName) {
             showResult('error', '❌', 'خطأ', 'يرجى إدخال اسم للموقع');
             return;
         }
-
-        if (!fileContent) {
-            showResult('error', '❌', 'خطأ', 'يرجى اختيار ملف HTML أولاً');
+        
+        if (!htmlCode) {
+            showResult('error', '❌', 'خطأ', 'يرجى لصق كود HTML');
             return;
         }
-
-        deployBtn.disabled = true;
-        deployBtn.textContent = '⏳ جاري النشر...';
-        showResult('loading', '⏳', 'جاري المعالجة...', 'يرجى الانتظار قليلاً');
-
+        
+        btn.disabled = true;
+        btn.textContent = '⏳ جاري النشر...';
+        showResult('loading', '⏳', 'جاري المعالجة', 'يرجى الانتظار...');
+        
         try {
-            // Use the already loaded file content
-            let finalContent = fileContent;
-
-            // Add watermark if enabled
-            if (document.getElementById('addWatermark').checked) {
-                const watermarkText = document.getElementById('watermarkText').value || 'Powered by YourDomain';
-                const watermark = `
-<!-- Watermark -->
-<div style="position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.85);color:#fff;padding:12px 24px;border-radius:50px;z-index:999999;font-family:'Segoe UI',sans-serif;font-size:14px;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:all 0.3s ease;">
-    ${watermarkText}
-</div>
-`;
-                if (finalContent.includes('</body>')) {
-                    finalContent = finalContent.replace('</body>', watermark + '\n</body>');
-                } else {
-                    finalContent += watermark;
-                }
-            }
-
-            // Encode to base64 with proper UTF-8 handling
+            // Encode to base64
             const base64Content = btoa(
-                encodeURIComponent(finalContent).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                encodeURIComponent(htmlCode).replace(/%([0-9A-F]{2})/g, (match, p1) => {
                     return String.fromCharCode(parseInt('0x' + p1));
                 })
             );
             
-            // GitHub API path
-            const path = `${basePath}/${siteName}/index.html`;
-            const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
-
-            // Check if file exists
+            const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${siteName}/index.html`;
+            
+            // Check if exists
             let sha = null;
             try {
-                const checkResponse = await fetch(apiUrl, {
+                const checkRes = await fetch(apiUrl, {
                     headers: {
                         'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
-                
-                if (checkResponse.ok) {
-                    const data = await checkResponse.json();
+                if (checkRes.ok) {
+                    const data = await checkRes.json();
                     sha = data.sha;
                 }
-            } catch (e) {
-                // File doesn't exist, that's fine
-            }
-
-            // Upload file
+            } catch (e) {}
+            
+            // Upload
             const uploadData = {
                 message: `🚀 Deploy: ${siteName}`,
                 content: base64Content
             };
+            if (sha) uploadData.sha = sha;
             
-            if (sha) {
-                uploadData.sha = sha;
-            }
-
             const response = await fetch(apiUrl, {
                 method: 'PUT',
                 headers: {
@@ -741,125 +350,30 @@
                 },
                 body: JSON.stringify(uploadData)
             });
-
+            
             if (response.ok) {
                 const [username, repoName] = repo.split('/');
-                const siteUrl = `https://${username}.github.io/${repoName}/${basePath}/${siteName}/`;
-                
-                // Save to deployed sites
-                const siteData = {
-                    name: siteName,
-                    url: siteUrl,
-                    date: new Date().toISOString()
-                };
-                
-                deployedSites = deployedSites.filter(s => s.name !== siteName);
-                deployedSites.unshift(siteData);
-                localStorage.setItem('deployedSites', JSON.stringify(deployedSites));
+                const siteUrl = `https://${username}.github.io/${repoName}/${path}/${siteName}/`;
                 
                 showResult('success', '🎉', 'تم النشر بنجاح!', 
-                    'موقعك الآن متاح على الإنترنت. قد يستغرق دقيقة واحدة حتى يصبح متاحاً.', 
-                    siteUrl);
+                    'موقعك الآن متاح على الإنترنت. قد يستغرق دقيقة واحدة.', siteUrl);
                 
-                // Auto open if checked
-                if (document.getElementById('autoOpen').checked) {
-                    setTimeout(() => window.open(siteUrl, '_blank'), 2000);
-                }
-                
-                // Refresh sites list
-                displaySites();
-                
-                // Reset form
+                // Reset
                 document.getElementById('siteName').value = '';
-                document.getElementById('htmlFile').value = '';
-                document.getElementById('fileLabel').classList.remove('has-file');
-                document.getElementById('fileName').textContent = '';
-                fileContent = null;
+                document.getElementById('htmlCode').value = '';
                 
+                setTimeout(() => window.open(siteUrl, '_blank'), 2000);
             } else {
                 const errorData = await response.json();
-                showResult('error', '❌', 'فشل النشر', errorData.message || 'حدث خطأ غير معروف');
+                showResult('error', '❌', 'فشل النشر', errorData.message || 'حدث خطأ');
             }
-
         } catch (error) {
-            console.error('Error details:', error);
-            let errorMessage = 'حدث خطأ غير متوقع';
-            
-            if (error.message.includes('read')) {
-                errorMessage = 'فشل قراءة الملف. تأكد من اختيار ملف صحيح وحاول مرة أخرى';
-            } else if (error.message.includes('token') || error.message.includes('credentials')) {
-                errorMessage = 'خطأ في Token أو الصلاحيات. تأكد من Token صحيح وله صلاحية repo';
-            } else if (error.message.includes('not found') || error.message.includes('404')) {
-                errorMessage = 'Repository غير موجود أو لا يمكن الوصول إليه';
-            } else {
-                errorMessage = error.message;
-            }
-            
-            showResult('error', '❌', 'خطأ', errorMessage);
+            showResult('error', '❌', 'خطأ', error.message);
         } finally {
-            deployBtn.disabled = false;
-            deployBtn.textContent = '🚀 نشر الموقع الآن';
+            btn.disabled = false;
+            btn.textContent = '🚀 نشر الموقع الآن';
         }
     }
-
-    function displaySites() {
-        if (deployedSites.length === 0) return;
-        
-        const sitesList = document.getElementById('sitesList');
-        const container = document.getElementById('sitesContainer');
-        
-        sitesList.style.display = 'block';
-        
-        container.innerHTML = deployedSites.map(site => `
-            <div class="site-item">
-                <div class="site-info">
-                    <h4>${site.name}</h4>
-                    <p>${new Date(site.date).toLocaleString('ar-EG')}</p>
-                </div>
-                <div class="site-actions">
-                    <button class="icon-btn view" onclick="window.open('${site.url}', '_blank')" title="فتح الموقع">
-                        🌐
-                    </button>
-                    <button class="icon-btn delete" onclick="deleteSite('${site.name}')" title="حذف">
-                        🗑️
-                    </button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function deleteSite(name) {
-        if (confirm(`هل أنت متأكد من حذف "${name}"؟`)) {
-            deployedSites = deployedSites.filter(s => s.name !== name);
-            localStorage.setItem('deployedSites', JSON.stringify(deployedSites));
-            displaySites();
-        }
-    }
-
-    // Load sites on page load
-    window.onload = () => {
-        displaySites();
-        
-        // Load saved settings
-        const savedToken = localStorage.getItem('github_token');
-        const savedRepo = localStorage.getItem('github_repo');
-        const savedPath = localStorage.getItem('base_path');
-        
-        if (savedToken) document.getElementById('githubToken').value = savedToken;
-        if (savedRepo) document.getElementById('repoName').value = savedRepo;
-        if (savedPath) document.getElementById('basePath').value = savedPath;
-        
-        // Save settings on change
-        document.getElementById('githubToken').addEventListener('change', (e) => {
-            localStorage.setItem('github_token', e.target.value);
-        });
-        document.getElementById('repoName').addEventListener('change', (e) => {
-            localStorage.setItem('github_repo', e.target.value);
-        });
-        document.getElementById('basePath').addEventListener('change', (e) => {
-            localStorage.setItem('base_path', e.target.value);
-        });
-    };
 </script>
 
 </body>
