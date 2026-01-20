@@ -440,7 +440,13 @@
                 <div class="form-group">
                     <label>🔑 GitHub Token</label>
                     <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-                    <div class="help-text">احصل عليه من github.com/settings/tokens</div>
+                    <div class="help-text">
+                        <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0070f3; text-decoration: none; font-weight: 600;">
+                            🔗 احصل على Token جديد
+                        </a>
+                        <br>
+                        <span style="color: #dc3545; font-weight: 600;">⚠️ يجب اختيار صلاحية "repo" كاملة</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>📦 Repository</label>
@@ -507,10 +513,21 @@
                     
                     <p style="margin: 20px 0 10px;"><strong>⚠️ ملاحظات:</strong></p>
                     <ul style="padding-right: 20px; color: #495057; font-size: 13px;">
+                        <li><strong>Token يجب أن يحتوي على صلاحية "repo" كاملة</strong></li>
                         <li>تأكد من تفعيل GitHub Pages في إعدادات المشروع</li>
                         <li>قد يستغرق النشر 1-2 دقيقة</li>
                         <li>الرابط سيكون: username.github.io/repo/sites/sitename</li>
                     </ul>
+                    
+                    <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                        <strong style="color: #856404;">🔐 خطوات إنشاء Token صحيح:</strong>
+                        <ol style="padding-right: 20px; color: #856404; font-size: 12px; margin-top: 8px;">
+                            <li>اذهب لـ <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0070f3;">github.com/settings/tokens/new</a></li>
+                            <li>اختر "Generate new token (classic)"</li>
+                            <li>✅ اختر صلاحية <strong>repo</strong> (كل الخيارات تحتها)</li>
+                            <li>اضغط Generate وانسخ الـ Token</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
@@ -535,14 +552,35 @@
     let deployedSites = JSON.parse(localStorage.getItem('deployedSites') || '[]');
 
     function handleFileSelect() {
-        const file = document.getElementById('htmlFile').files[0];
+        const fileInput = document.getElementById('htmlFile');
         const label = document.getElementById('fileLabel');
         const fileName = document.getElementById('fileName');
         
-        if (file) {
-            label.classList.add('has-file');
-            fileName.textContent = `✅ ${file.name}`;
+        // Check if file exists
+        if (!fileInput.files || fileInput.files.length === 0) {
+            label.classList.remove('has-file');
+            fileName.textContent = '';
+            return;
         }
+        
+        const file = fileInput.files[0];
+        
+        // Validate file type
+        if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
+            alert('⚠️ يرجى اختيار ملف HTML فقط');
+            fileInput.value = '';
+            return;
+        }
+        
+        // Validate file size (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('⚠️ حجم الملف كبير جداً (الحد الأقصى 10MB)');
+            fileInput.value = '';
+            return;
+        }
+        
+        label.classList.add('has-file');
+        fileName.textContent = `✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
     }
 
     function toggleWatermark() {
@@ -606,7 +644,7 @@
             return;
         }
 
-        if (!fileInput.files[0]) {
+        if (!fileInput.files || !fileInput.files[0]) {
             showResult('error', '❌', 'خطأ', 'يرجى اختيار ملف HTML');
             return;
         }
@@ -616,10 +654,19 @@
         showResult('loading', '⏳', 'جاري المعالجة...', 'يرجى الانتظار قليلاً');
 
         try {
+            // Get fresh file reference
             const file = fileInput.files[0];
-            let content = await file.text();
+            
+            // Read file using FileReader for better compatibility
+            const content = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(new Error('فشل قراءة الملف. حاول مرة أخرى'));
+                reader.readAsText(file, 'UTF-8');
+            });
 
             // Add watermark if enabled
+            let finalContent = content;
             if (document.getElementById('addWatermark').checked) {
                 const watermarkText = document.getElementById('watermarkText').value || 'Powered by YourDomain';
                 const watermark = `
@@ -628,11 +675,15 @@
     ${watermarkText}
 </div>
 `;
-                content = content.replace('</body>', watermark + '\n</body>');
+                finalContent = content.replace('</body>', watermark + '\n</body>');
             }
 
-            // Encode to base64
-            const base64Content = btoa(unescape(encodeURIComponent(content)));
+            // Encode to base64 with proper UTF-8 handling
+            const base64Content = btoa(
+                encodeURIComponent(finalContent).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                    return String.fromCharCode(parseInt('0x' + p1));
+                })
+            );
             
             // GitHub API path
             const path = `${basePath}/${siteName}/index.html`;
@@ -715,7 +766,20 @@
             }
 
         } catch (error) {
-            showResult('error', '❌', 'خطأ', `حدث خطأ: ${error.message}`);
+            console.error('Error details:', error);
+            let errorMessage = 'حدث خطأ غير متوقع';
+            
+            if (error.message.includes('read')) {
+                errorMessage = 'فشل قراءة الملف. تأكد من اختيار ملف صحيح وحاول مرة أخرى';
+            } else if (error.message.includes('token') || error.message.includes('credentials')) {
+                errorMessage = 'خطأ في Token أو الصلاحيات. تأكد من Token صحيح وله صلاحية repo';
+            } else if (error.message.includes('not found') || error.message.includes('404')) {
+                errorMessage = 'Repository غير موجود أو لا يمكن الوصول إليه';
+            } else {
+                errorMessage = error.message;
+            }
+            
+            showResult('error', '❌', 'خطأ', errorMessage);
         } finally {
             deployBtn.disabled = false;
             deployBtn.textContent = '🚀 نشر الموقع الآن';
