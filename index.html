@@ -551,6 +551,8 @@
 <script>
     let deployedSites = JSON.parse(localStorage.getItem('deployedSites') || '[]');
 
+    let fileContent = null; // Store file content globally
+
     function handleFileSelect() {
         const fileInput = document.getElementById('htmlFile');
         const label = document.getElementById('fileLabel');
@@ -560,6 +562,7 @@
         if (!fileInput.files || fileInput.files.length === 0) {
             label.classList.remove('has-file');
             fileName.textContent = '';
+            fileContent = null;
             return;
         }
         
@@ -569,6 +572,7 @@
         if (!file.name.toLowerCase().endsWith('.html') && !file.name.toLowerCase().endsWith('.htm')) {
             alert('⚠️ يرجى اختيار ملف HTML فقط');
             fileInput.value = '';
+            fileContent = null;
             return;
         }
         
@@ -576,11 +580,28 @@
         if (file.size > 10 * 1024 * 1024) {
             alert('⚠️ حجم الملف كبير جداً (الحد الأقصى 10MB)');
             fileInput.value = '';
+            fileContent = null;
             return;
         }
         
-        label.classList.add('has-file');
-        fileName.textContent = `✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+        // Read file immediately when selected
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            fileContent = e.target.result;
+            label.classList.add('has-file');
+            fileName.textContent = `✅ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+        };
+        
+        reader.onerror = function() {
+            alert('❌ فشل قراءة الملف. جرب ملف آخر');
+            fileInput.value = '';
+            fileContent = null;
+            label.classList.remove('has-file');
+            fileName.textContent = '';
+        };
+        
+        reader.readAsText(file, 'UTF-8');
     }
 
     function toggleWatermark() {
@@ -630,7 +651,6 @@
         const repo = document.getElementById('repoName').value.trim();
         const basePath = document.getElementById('basePath').value.trim() || 'sites';
         const siteName = document.getElementById('siteName').value.trim();
-        const fileInput = document.getElementById('htmlFile');
         const deployBtn = document.getElementById('deployBtn');
 
         // Validation
@@ -644,8 +664,8 @@
             return;
         }
 
-        if (!fileInput.files || !fileInput.files[0]) {
-            showResult('error', '❌', 'خطأ', 'يرجى اختيار ملف HTML');
+        if (!fileContent) {
+            showResult('error', '❌', 'خطأ', 'يرجى اختيار ملف HTML أولاً');
             return;
         }
 
@@ -654,19 +674,10 @@
         showResult('loading', '⏳', 'جاري المعالجة...', 'يرجى الانتظار قليلاً');
 
         try {
-            // Get fresh file reference
-            const file = fileInput.files[0];
-            
-            // Read file using FileReader for better compatibility
-            const content = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.onerror = (e) => reject(new Error('فشل قراءة الملف. حاول مرة أخرى'));
-                reader.readAsText(file, 'UTF-8');
-            });
+            // Use the already loaded file content
+            let finalContent = fileContent;
 
             // Add watermark if enabled
-            let finalContent = content;
             if (document.getElementById('addWatermark').checked) {
                 const watermarkText = document.getElementById('watermarkText').value || 'Powered by YourDomain';
                 const watermark = `
@@ -675,7 +686,11 @@
     ${watermarkText}
 </div>
 `;
-                finalContent = content.replace('</body>', watermark + '\n</body>');
+                if (finalContent.includes('</body>')) {
+                    finalContent = finalContent.replace('</body>', watermark + '\n</body>');
+                } else {
+                    finalContent += watermark;
+                }
             }
 
             // Encode to base64 with proper UTF-8 handling
@@ -759,6 +774,7 @@
                 document.getElementById('htmlFile').value = '';
                 document.getElementById('fileLabel').classList.remove('has-file');
                 document.getElementById('fileName').textContent = '';
+                fileContent = null;
                 
             } else {
                 const errorData = await response.json();
